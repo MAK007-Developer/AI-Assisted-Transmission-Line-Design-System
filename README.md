@@ -1,11 +1,12 @@
 # ⚡ AI-Assisted Transmission Line Design System
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Python-3.10+-3776AB?logo=python&logoColor=white" alt="Python" height="40"/>
-  <img src="https://img.shields.io/badge/Streamlit-App-FF4B4B?logo=streamlit&logoColor=white" alt="Streamlit" height="40"/>
-  <img src="https://img.shields.io/badge/scikit--learn-ML-orange?logo=scikitlearn&logoColor=white" alt="scikit-learn" height="40"/>
-  <img src="https://img.shields.io/badge/XGBoost-Regression-008000?logo=xgboost&logoColor=white" alt="XGBoost" height="40"/>
+  <img src="https://img.shields.io/badge/Python-3.10+-3776AB?logo=python&logoColor=white" alt="Python" height="100"/>
+  <img src="https://img.shields.io/badge/Streamlit-App-FF4B4B?logo=streamlit&logoColor=white" alt="Streamlit" height="100"/>
+  <img src="https://img.shields.io/badge/scikit--learn-ML-orange?logo=scikitlearn&logoColor=white" alt="scikit-learn" height="100"/>
+  <img src="https://img.shields.io/badge/XGBoost-Regression-008000?logo=xgboost&logoColor=white" alt="XGBoost" height="100"/>
 </p>
+
 
 ## 📘 Overview
 
