@@ -37,6 +37,8 @@ The Streamlit app includes multiple interactive pages for data input, prediction
   * Cost & Loss Estimation
   * Results & Reports
   * Model Performance
+  * Compare Scenarios
+  * Model Retraining
 
 **Why Streamlit?**
 It allows fast development and deployment without needing frontend frameworks. Keeping navigation inside one file makes state management simple.
