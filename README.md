@@ -1,100 +1,147 @@
-# AI-Assisted Transmission Line Design System
+# ⚡ AI-Assisted Transmission Line Design System
 
-## Overview
+[![Python](https://img.shields.io/badge/Python-3.10+-3776AB?logo=python\&logoColor=white)]()
+[![Streamlit](https://img.shields.io/badge/Streamlit-App-FF4B4B?logo=streamlit\&logoColor=white)]()
+[![scikit-learn](https://img.shields.io/badge/scikit--learn-ML-orange?logo=scikitlearn\&logoColor=white)]()
+[![XGBoost](https://img.shields.io/badge/XGBoost-Regression-008000?logo=xgboost\&logoColor=white)]()
 
-This is a **machine learning-powered transmission line design system** built with Streamlit. The application assists electrical engineers in selecting optimal conductors and insulators for high-voltage transmission lines, and estimating project costs and power losses.
+
+## 📘 Overview
+
+This is a **machine learning-powered transmission line design system** built with **Python** and **Streamlit**.
+It helps electrical engineers choose the right **conductors**, **insulators**, and estimate **project cost** and **power losses** for high-voltage transmission lines.
 
 The system uses two ML models:
-1. **RandomForestClassifier** - Predicts conductor type (AAAC/ACSR/ACCC) and insulator type (Porcelain/Glass/Composite) based on voltage, current, temperature, and pollution levels
-2. **XGBoost Regressor** - Estimates total project cost and line losses based on route length, tower count, conductor type, and regional factors
 
-The application provides an interactive dashboard with multiple pages for data input, predictions, results visualization, and model performance metrics.
+1. **RandomForestClassifier**
+   Predicts conductor type (AAAC / ACSR / ACCC) and insulator type (Porcelain / Glass / Composite).
 
-## User Preferences
+2. **XGBoost Regressor**
+   Estimates total project cost and line losses based on line length, number of towers, conductor type, and regional factors.
 
-Preferred communication style: Simple, everyday language.
+The Streamlit app includes multiple interactive pages for data input, predictions, visuals, and model performance.
 
-## System Architecture
 
-### Frontend Architecture
-- **Framework**: Streamlit (Python web framework for data applications)
-- **Layout**: Wide layout with expandable sidebar navigation
-- **Pages**: Multi-page application using radio button navigation
-  - Overview/Dashboard
-  - Conductor & Insulation Selection
-  - Cost & Loss Estimation  
-  - Results & Reports
-  - Model Performance
+## 🏗️ System Architecture
 
-**Design Decision**: Streamlit was chosen for rapid prototyping and deployment of ML applications without requiring frontend framework expertise. The radio button navigation keeps all pages in a single file, simplifying state management.
+### 🎨 Frontend Architecture
 
-### Backend Architecture
-- **ML Training Pipeline**: Separate `train_models.py` script for offline model training
-- **Model Serving**: Models loaded at application startup using `@st.cache_resource` decorator
-- **State Management**: Streamlit's native `st.session_state` for cross-page data persistence
+* **Framework:** Streamlit
+* **Layout:** Wide layout with sidebar navigation
+* **Pages:**
 
-**Design Decision**: Separating training from serving allows models to be retrained independently without modifying the main application. Caching prevents redundant model loading on each user interaction.
+  * Dashboard / Overview
+  * Conductor & Insulator Selection
+  * Cost & Loss Estimation
+  * Results & Reports
+  * Model Performance
 
-### Machine Learning Models
+**Why Streamlit?**
+It allows fast development and deployment without needing frontend frameworks. Keeping navigation inside one file makes state management simple.
 
-#### Conductor Selection Model
-- **Algorithm**: RandomForestClassifier (scikit-learn)
-- **Input Features**: 
-  - Voltage (66-800 kV)
-  - Current (100-5000 A)
-  - Temperature (-10 to 60°C)
-  - Pollution level (Low/Medium/High - categorical)
-- **Outputs**: Conductor type, Insulator type
-- **Preprocessing**: OneHotEncoder for categorical pollution feature via ColumnTransformer
-- **Training Data**: 100,000 synthetically generated samples with rule-based labels
 
-**Design Decision**: RandomForest chosen for its interpretability and robust handling of mixed feature types. Synthetic data generation uses domain-specific rules (e.g., higher voltage requires better conductors).
+### 🧠 Backend Architecture
 
-#### Cost Estimation Model
-- **Algorithm**: XGBRegressor wrapped in MultiOutputRegressor
-- **Input Features**:
-  - Route length (10-1000 km)
-  - Tower count (10-500)
-  - Conductor type (AAAC/ACSR/ACCC - categorical)
-  - Region factor (0.8-2.0 multiplier)
-- **Outputs**: Total cost, Line loss percentage
-- **Preprocessing**: OneHotEncoder for conductor type
-- **Training Data**: 100,000 synthetically generated samples
+* **Training Pipeline:** `train_models.py` handles offline training
+* **Model Serving:** Cached loading with `@st.cache_resource`
+* **State Management:** `st.session_state` keeps values between pages
 
-**Design Decision**: XGBoost selected for superior performance on regression tasks with tabular data. MultiOutputRegressor enables simultaneous prediction of cost and losses.
+**Why separate training?**
+It lets you retrain models anytime without changing the app itself. Caching avoids reloading models on every user action.
 
-### Data Storage
-- **Model Persistence**: Joblib serialization (`.joblib` files)
-- **Application State**: In-memory via Streamlit session state
-- **No Database**: Stateless application; no persistent user data storage
+---
 
-**Design Decision**: Since this is a calculation tool without user accounts or historical data requirements, database overhead is avoided. Models are pre-trained and loaded from disk.
+## 🤖 Machine Learning Models
 
-### Engineering Calculations
-- **Creepage Distance**: Calculated using pollution-based formula
-  ```
-  creepage = voltage × pollution_factor
-  pollution_factors = {'Low': 20, 'Medium': 25, 'High': 31}
-  ```
+### 🔌 Conductor & Insulator Selection Model
 
-**Design Decision**: Real electrical engineering formula replaces placeholder logic to provide accurate insulator sizing.
+* **Algorithm:** RandomForestClassifier (scikit-learn)
+* **Inputs:**
 
-## External Dependencies
+  * Voltage (66–800 kV)
+  * Current (100–5000 A)
+  * Temperature (−10 to 60°C)
+  * Pollution level (Low / Medium / High)
+* **Outputs:** Conductor type, Insulator type
+* **Preprocessing:** OneHotEncoder + ColumnTransformer
+* **Training Data:** 100,000 synthetic samples (rule-based labels)
 
-### Python Libraries
-- **streamlit** - Web application framework
-- **pandas** - Data manipulation and model input formatting
-- **numpy** - Numerical computations and synthetic data generation
-- **plotly.express** - Interactive data visualizations
-- **scikit-learn** - RandomForest classifier, preprocessing pipelines, ColumnTransformer, OneHotEncoder
-- **xgboost** - Gradient boosting regressor for cost/loss prediction
-- **joblib** - Model serialization and deserialization
+**Why RandomForest?**
+It's easy to understand, works well with mixed features, and performs reliably on structured engineering data.
 
-### Assets
-- **Logo.png** - University/institution branding image (90px width)
+---
 
-### Model Files (Generated)
-- **conductor_model.joblib** - Trained RandomForest pipeline for material selection
-- **cost_model.joblib** - Trained XGBoost pipeline for cost/loss estimation
+### 💰 Cost & Loss Estimation Model
 
-**Note**: Models must be trained by running `train_models.py` before launching the Streamlit application.
+* **Algorithm:** XGBRegressor (wrapped in MultiOutputRegressor)
+* **Inputs:**
+
+  * Route length (10–1000 km)
+  * Tower count (10–500)
+  * Conductor type
+  * Region factor (0.8–2.0)
+* **Outputs:**
+
+  * Total project cost
+  * Line loss percentage
+* **Preprocessing:** OneHotEncoder
+* **Training Data:** 100,000 synthetic samples
+
+**Why XGBoost?**
+It performs strongly on tabular regression tasks and handles complex patterns better than traditional ML algorithms.
+
+---
+
+## 📦 Data & Storage
+
+### 🗂️ Data Handling
+
+* **Models:** Saved as `.joblib` files
+* **App State:** Managed in memory with Streamlit
+* **No Database:** The app does not store user history or accounts
+
+**Why no database?**
+This tool only calculates results—it doesn’t need long-term storage.
+
+---
+
+## 📏 Engineering Calculations
+
+### 🌫️ Creepage Distance
+
+```text
+creepage = voltage × pollution_factor
+pollution_factors = {
+    'Low': 20,
+    'Medium': 25,
+    'High': 31
+}
+```
+
+A domain-accurate formula ensures realistic insulator sizing.
+
+---
+
+## 📚 External Dependencies
+
+### 🐍 Python Libraries
+
+* **streamlit** – UI framework
+* **pandas** – Data handling
+* **numpy** – Numerical operations
+* **plotly.express** – Visual charts
+* **scikit-learn** – RandomForest + preprocessing
+* **xgboost** – Regression model
+* **joblib** – Model saving/loading
+
+### 🖼️ Assets
+
+* `logo.png` – Branding image (90px width)
+
+### 🧪 Generated Model Files
+
+* `conductor_model.joblib` – RandomForest pipeline
+* `cost_model.joblib` – XGBoost pipeline
+
+**Important:**
+You must run `train_models.py` at least once to generate these model files before launching the Streamlit app.
